@@ -1,0 +1,127 @@
+<script src="https://unpkg.com/vue/dist/vue.js ">
+</script>
+
+<div id="app">
+	<input type="text" v-model="title" />
+	<!-- two way bind "OR"-->
+	<input type="text" v-on:input="title = $event.target.value" />
+		<!--by default what we enter in input box
+			is going in $event-->
+	<button v-on:click="title = 'New Title :)'" >Change Title</button>  <!--instead onclick in vue we use directive-->
+	<button v-on:click="changeTitle" >Change Title</button>
+	<p v-bind:class= "title"> {{title}}</p> <!-- dynamically oututing data-->
+	<button v-on:click = "increment" >increment</button>
+	<p>counter : {{counter}}</p>
+	<p>clicks : {{clicks}}</p>
+	<!--hide/show-->
+	<button v-on:click="show = !show">show/hide</button>
+	<p v-if="show">cool </p>
+	<p v-else>not cool</p>
+	<p v-show="show">not removing from dom</p>
+	<hr>
+	<ul>
+		<li v-for="person in persons">{{person.name}}</li>
+		<!-- also get index -->
+		<li v-for="(person,index) in persons">{{person.name}} - {{index}}</li>
+	</ul>
+	<hr>
+	<p>{{upperCaseTitle }}</p>
+	<p>{{title  | upperCase  | lowercase}}</p>
+	<p>{{title  | upperCase  }}</p>
+	<hr>
+	<!--components-->
+	<p>{{title}}</p>
+	<!--div class="user" v-for="person in persons">
+		<p>username : {{person.name}}</p>
+	</div-->
+	<app-user></app-user>
+	<app-user></app-user> <!-- we cn reuse comp -->
+</div>
+
+
+<script>
+//global Component - /* can use in any vue instance */
+/*its the extension of Vue instance with one major 
+ differnce , the data property is no longer obj ,
+ now it is func */
+Vue.component('app-user',{
+	data : function(){
+		return {
+			persons : [
+				{name:'shivam' , age:22} ,
+				{name : 'priyanshu' , age:18},
+				{name :'kuchu' , age: 20},
+			],
+		};
+	},
+	//in template u must have only 1 root ele
+	template : '<div><div class="user" v-for="person in persons"><p>username : {{person.name}}</p></div></div>'
+});
+
+
+//Global filt
+//naming it upperCase
+Vue.filter('upperCase',function(value){
+	return value.toUpperCase();
+});
+
+new Vue({
+	el: '#app', //got control of div 
+				//nw cn output sm data there
+	data :{
+		title : 'Hello World !', //var -> title
+		//counter : 0 ,
+		clicks : 0 ,
+		show : true ,
+		persons : [
+			{name:'shivam' , age:22} ,
+			{name : 'priyanshu' , age:18},
+			{name :'kuchu' , age: 20},
+		],
+	} ,
+	
+	methods : {
+		changeTitle(){
+			this.title = 'New Title2 ';
+		},
+		increment(){
+			this.clicks++ ;
+			//this.counter = this.clicks * 2 ;
+		},
+		
+	},
+	
+	computed: {
+		counter(){ //we write it as a method, but willl return value as value
+			return this.clicks * 2;
+		},
+		upperCaseTitle(){
+			return this.title.toUpperCase();
+		},
+		
+	},
+	//if have to convert many such var in upercase
+	filters :{
+		lowercase(value){
+			return value.toLowerCase();
+		}
+	},
+	
+	
+});
+
+</script>
+
+<style>
+.red{
+	background-color:red;
+}
+.blue{
+	background-color:blue;
+}
+.user{
+	border : 1px solid #666;
+	background-color:white;
+	padding: 1px;
+}
+</style>

@@ -1,0 +1,58 @@
+<script src="https://unpkg.com/vue/dist/vue.js ">
+</script>
+
+<div id="app">
+	<input type="text" v-model="title" />
+	<!-- two way bind "OR"-->
+	<input type="text" v-on:input="title = $event.target.value" />
+		<!--by default what we enter in input box
+			is going in $event-->
+	<button v-on:click="title = 'New Title :)'" >Change Title</button>  <!--instead onclick in vue we use directive-->
+	<button v-on:click="changeTitle" >Change Title</button>
+	<p v-bind:class= "title"> {{title}}</p> <!-- dynamically oututing data-->
+	<button v-on:click = "increment" >increment</button>
+	<p>counter : {{counter}}</p>
+	<p>clicks : {{clicks}}</p>
+</div>
+
+
+<script>
+new Vue({
+	el: '#app', //got control of div 
+				//nw cn output sm data there
+	data :{
+		title : 'Hello World !', //var -> title
+		//counter : 0 ,
+		clicks : 0 ,
+	} ,
+	
+	methods : {
+		changeTitle(){
+			this.title = 'New Title2 ';
+		},
+		increment(){
+			this.clicks++ ;
+			//this.counter = this.clicks * 2 ;
+		}
+		
+	},
+	
+	computed: {
+		counter(){ //we write it as a method, but willl return value as value
+			return this.clicks * 2;
+		},
+	},
+	
+	
+});
+
+</script>
+
+<style>
+.red{
+	background-color:red;
+}
+.blue{
+	background-color:blue;
+}
+</style>
